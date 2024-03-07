@@ -1,0 +1,29 @@
+[versions]
+agp = "8.4.0-alpha10"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+appcompat = "1.6.1"
+lombok = "1.18.30"
+material = "1.10.0"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
+springAndroidRestTemplate = "2.0.0.M3"
+sqliteassethelper = "2.0.1"
+
+[libraries]
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+spring-android-rest-template = { module = "org.springframework.android:spring-android-rest-template", version.ref = "springAndroidRestTemplate" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+sqliteassethelper = { module = "com.readystatesoftware.sqliteasset:sqliteassethelper", version.ref = "sqliteassethelper" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+

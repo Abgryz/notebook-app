@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Notebook</string>
+    <string name="enter_your_task">Enter your task...</string>
+    <string name="add">Add</string>
+    <string name="diary">diary</string>
+    <string name="case_string">CASE</string>
+    <string name="logo">logo</string>
+    <string name="delete">delete</string>
+    <string name="tasktext">TaskText</string>
+</resources>
