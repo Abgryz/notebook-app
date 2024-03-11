@@ -53,26 +53,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
             deleteButton = itemView.findViewById(R.id.deleteButton);
 
-            taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> taskCheckboxListener(isChecked));
+            deleteButton.setOnClickListener(v -> deleteButtonListener());
+        }
 
-                Task task = tasks.get(getAdapterPosition());
-                task.setCompleted(isChecked);
-                Log.i(null, "TaskViewHolder: " + task);
-                db.updateTask(task);
-                if (isChecked) {
-                    taskCheckBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                } else {
-                    taskCheckBox.setPaintFlags(0);
-                }
-            });
+        private void deleteButtonListener() {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION){
+                db.deleteTask(tasks.remove(position).getId());
+                notifyItemRemoved(position);
+            }
+        }
 
-            deleteButton.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION){
-                    db.deleteTask(tasks.remove(position).getId());
-                    notifyItemRemoved(position);
-                }
-            });
+        private void taskCheckboxListener(boolean isChecked) {
+            Task task = tasks.get(getAdapterPosition());
+            task.setCompleted(isChecked);
+            db.updateTask(task);
+            if (isChecked) {
+                taskCheckBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                taskCheckBox.setPaintFlags(0);
+            }
         }
 
         public void bind(Task task) {
@@ -81,8 +82,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             if (task.isCompleted()) {
                 taskCheckBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                taskCheckBox.setPaintFlags(0);
             }
         }
     }

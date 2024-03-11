@@ -7,11 +7,12 @@
 
     <CheckBox
         android:id="@+id/taskCheckBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/imprima"
         android:text="@string/tasktext"
         android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
