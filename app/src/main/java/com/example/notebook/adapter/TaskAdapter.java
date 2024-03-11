@@ -2,7 +2,6 @@ package com.example.notebook.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,22 +65,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
 
         private void taskCheckboxListener(boolean isChecked) {
-            Task task = tasks.get(getAdapterPosition());
+            int position = getAdapterPosition();
+            Task task = tasks.get(position);
             task.setCompleted(isChecked);
             db.updateTask(task);
-            if (isChecked) {
-                taskCheckBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                taskCheckBox.setPaintFlags(0);
-            }
+            itemView.post(() -> notifyItemChanged(position));
         }
 
-        public void bind(Task task) {
+        public void bind(@NonNull Task task) {
             taskCheckBox.setText(task.getTask());
             taskCheckBox.setChecked(task.isCompleted());
 
             if (task.isCompleted()) {
                 taskCheckBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                taskCheckBox.setPaintFlags(0);
             }
         }
     }
