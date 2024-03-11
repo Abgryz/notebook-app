@@ -2,6 +2,7 @@ package com.example.notebook.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notebook.R;
+import com.example.notebook.database.DatabaseHandler;
 import com.example.notebook.model.Task;
 
 import java.util.List;
@@ -21,7 +23,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private Context context;
-    private List<Task> tasks;
+    private final List<Task> tasks;
+    private final DatabaseHandler db;
 
     @NonNull
     @Override
@@ -54,7 +57,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
                 Task task = tasks.get(getAdapterPosition());
                 task.setCompleted(isChecked);
-
+                Log.i(null, "TaskViewHolder: " + task);
+                db.updateTask(task);
                 if (isChecked) {
                     taskCheckBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
@@ -65,7 +69,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             deleteButton.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION){
-                    tasks.remove(position);
+                    db.deleteTask(tasks.remove(position).getId());
                     notifyItemRemoved(position);
                 }
             });
