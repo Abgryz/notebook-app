@@ -1,6 +1,6 @@
 package com.example.notebook.adapter;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +9,13 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notebook.R;
 import com.example.notebook.database.DatabaseHandler;
+import com.example.notebook.dialog.DialogCloseListener;
+import com.example.notebook.dialog.EditDialog;
 import com.example.notebook.model.Task;
 
 import java.util.List;
@@ -21,7 +24,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
-    private Context context;
+    private AppCompatActivity context;
     private final List<Task> tasks;
     private final DatabaseHandler db;
 
@@ -43,17 +46,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return tasks.size();
     }
 
-    public class TaskViewHolder extends RecyclerView.ViewHolder {
+    public class TaskViewHolder extends RecyclerView.ViewHolder implements DialogCloseListener{
         private final CheckBox taskCheckBox;
-        private final ImageButton deleteButton;
+        private final ImageButton editButton;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
-            deleteButton = itemView.findViewById(R.id.deleteButton);
+            ImageButton deleteButton = itemView.findViewById(R.id.deleteButton);
 
             taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> taskCheckboxListener(isChecked));
             deleteButton.setOnClickListener(v -> deleteButtonListener());
+
+            editButton = itemView.findViewById(R.id.editButton);
+            editButton.setOnClickListener(v -> editButtonListener());
+        }
+
+        private void editButtonListener() {
+            EditDialog dialogFragment = new EditDialog(tasks.get(getAdapterPosition()), context, db, this);
+            dialogFragment.show(context.getSupportFragmentManager(), "EditText");
         }
 
         private void deleteButtonListener() {
@@ -81,6 +92,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             } else {
                 taskCheckBox.setPaintFlags(0);
             }
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        public void onCloseDialog() {
+            notifyDataSetChanged();
         }
     }
 }
